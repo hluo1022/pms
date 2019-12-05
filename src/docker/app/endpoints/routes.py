@@ -2,7 +2,7 @@ from flask import jsonify
 from flask import Blueprint
 from flask_restplus import Resource
 from ..restplus import api
-from flask_restplus import fields
+from .. import models
 
 blueprint = Blueprint('routes', __name__)
 
@@ -14,17 +14,11 @@ task = {
     'description': 'Milk, Cheese, Pizza, Fruit, Tylenol',
 }
 
-task_model = api.model('test', {
-    'id': fields.Integer,
-    'title': fields.String,
-    'description': fields.String,
-})
-
 @ns.route('/')
 class Routes(Resource):
 
-    @api.response(204, 'Successful')
-    @api.marshal_with(task_model)
+    @api.response(200, 'Successful')
+    @api.marshal_with(models.task_model)
     def get(self):
         return task
 
