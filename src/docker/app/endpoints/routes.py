@@ -1,29 +1,32 @@
 from flask import jsonify
 from flask import Blueprint
+from flask_restplus import Resource
 from ..restplus import api
+from flask_restplus import fields
 
 blueprint = Blueprint('routes', __name__)
 
-ns = api.namespace('pms/posts', description='Operations related to pms posts')
+ns = api.namespace('routes', description='Operations related to pms posts')
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
-]
+task = {
+    'id': 1,
+    'title': 'Buy groceries',
+    'description': 'Milk, Cheese, Pizza, Fruit, Tylenol',
+}
 
-@blueprint.route('/tasks', methods=['GET'])
-def get_tasks():
-    return jsonify({'tasks': tasks})
+task_model = api.model('test', {
+    'id': fields.Integer,
+    'title': fields.String,
+    'description': fields.String,
+})
+
+@ns.route('/')
+class Routes(Resource):
+
+    @api.response(204, 'Successful')
+    @api.marshal_with(task_model)
+    def get(self):
+        return task
 
 @blueprint.route('/')
 def index():
