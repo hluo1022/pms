@@ -1,5 +1,10 @@
-from app import app
 from flask import jsonify
+from flask import Blueprint
+from ..restplus import api
+
+blueprint = Blueprint('routes', __name__)
+
+ns = api.namespace('pms/posts', description='Operations related to pms posts')
 
 tasks = [
     {
@@ -16,10 +21,10 @@ tasks = [
     }
 ]
 
-@app.route('/tasks', methods=['GET'])
+@blueprint.route('/tasks', methods=['GET'])
 def get_tasks():
     return jsonify({'tasks': tasks})
 
-@app.route('/')
+@blueprint.route('/')
 def index():
     return "Hello, World!"
