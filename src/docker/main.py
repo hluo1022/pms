@@ -1,6 +1,5 @@
 from app import settings
-from app.endpoints import routes
-from app.restplus import api
+from app.apiv1 import blueprint as api
 from flask import Flask
 
 app = Flask(__name__)
@@ -15,9 +14,6 @@ def configure_app():
 def initialize_app():
 	configure_app()
 
-	api.init_app(routes.blueprint)
-	api.add_namespace(routes.ns)
-
-	app.register_blueprint(routes.blueprint)
+	app.register_blueprint(api)
 
 initialize_app()
